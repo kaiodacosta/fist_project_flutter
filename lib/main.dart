@@ -1,7 +1,53 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MyAppSecondChalleng());
+}
+
+class MyAppSecondChalleng extends StatelessWidget {
+  const MyAppSecondChalleng({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Flutter: Primeiros Passos'),
+          titleTextStyle: const TextStyle(
+            fontSize: 22,
+          ),
+        ),
+        body: Column(
+          children: const [
+            SecondChallenge(
+              first_color: Colors.white,
+              second_color: Colors.pink,
+              third_color: Colors.blue,
+            ),
+            SecondChallenge(
+              first_color: Colors.pink,
+              second_color: Colors.purple,
+              third_color: Colors.blueAccent,
+            ),
+            SecondChallenge(
+              first_color: Colors.pink,
+              second_color: Colors.yellowAccent,
+              third_color: Colors.blue,
+            ),
+            SecondChallenge(
+              first_color: Colors.purple,
+              second_color: Colors.white,
+              third_color: Colors.green,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -114,6 +160,57 @@ class _TaskState extends State<Task> {
                   ),
                 )
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SecondChallenge extends StatefulWidget {
+  final Color first_color;
+  final Color second_color;
+  final Color third_color;
+
+  const SecondChallenge(
+      {Key? key,
+      required this.first_color,
+      required this.second_color,
+      required this.third_color})
+      : super(key: key);
+
+  @override
+  State<SecondChallenge> createState() => _SecondChallengeState();
+}
+
+class _SecondChallengeState extends State<SecondChallenge> {
+  @override
+  Widget build(BuildContext context) {
+    const double height = 140;
+    const double width = 100;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        child: Row(
+          children: [
+            Container(
+              color: widget.first_color,
+              height: height,
+              width: width,
+            ),
+            Container(
+              color: widget.second_color,
+              height: height,
+              width: width,
+            ),
+            Container(
+              color: widget.third_color,
+              height: height,
+              width: width,
+            ),
+            SizedBox(
+              height: 100,
             ),
           ],
         ),
