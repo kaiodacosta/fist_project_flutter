@@ -1,4 +1,4 @@
-import 'package:fist_project/screens/todo.dart';
+import 'package:todo/screens/initial_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,6 +15,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: const Todo());
+        home: const InitialScreen());
   }
 }
