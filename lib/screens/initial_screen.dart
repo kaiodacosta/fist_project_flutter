@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/components/task.dart';
+import 'package:todo/data/task_inherited.dart';
+import 'package:todo/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({Key? key}) : super(key: key);
@@ -9,53 +10,27 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  bool opacity = true;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Tasks'),
       ),
-      body: AnimatedOpacity(
-        opacity: (opacity) ? 1 : 0,
-        duration: const Duration(milliseconds: 800),
-        child: ListView(
-          children: const [
-            Task(
-                'Aprender Flutter',
-                'assets/images/aprender-flutter.png',
-                3),
-            Task(
-                'Andar de Bike',
-                'assets/images/andar-de-bike.jpg',
-                4),
-            Task(
-                'Meditar',
-                'assets/images/meditar.jpeg',
-                5),
-            Task(
-                'Ler',
-                'assets/images/ler.webp',
-                5),
-            Task(
-                'Jogar bola',
-                'assets/images/jogar-bola.jpg',
-                1),
-            SizedBox(
-              height: 80,
-            )
-          ],
-        ),
+      body: ListView(
+        padding: const EdgeInsets.only(top: 8, bottom: 70),
+        children: TaskInherited.of(context).taskList,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            opacity = !opacity;
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (contextNew) => FormScreen(
+                      taskContext: context,
+                    )),
+          );
         },
-        child: Icon(
-            opacity ? Icons.remove_red_eye_outlined : Icons.remove_red_eye),
+        child: const Icon(Icons.add),
       ),
     );
   }

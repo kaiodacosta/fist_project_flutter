@@ -1,20 +1,25 @@
-import 'package:todo/components/difficult.dart';
 import 'package:flutter/material.dart';
+import 'package:todo/components/difficult.dart';
 
 class Task extends StatefulWidget {
   final String name;
   final String foto;
-  final int difficult;
+  final int difficulty;
 
-  const Task(this.name, this.foto, this.difficult, {Key? key})
+  Task(this.name, this.foto, this.difficulty, {Key? key})
       : super(key: key);
+
+  int level = 0;
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int level = 0;
+
+  bool isImageFromNetwork() {
+    return (widget.foto.contains('http'));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +51,12 @@ class _TaskState extends State<Task> {
                       width: 100,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
-                        child: Image.asset(
-                          widget.foto,
-                          fit: BoxFit.cover,
-                        ),
+                        child: isImageFromNetwork()
+                            ? Image.network(widget.foto, fit: BoxFit.cover,)
+                            : Image.asset(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                     Column(
@@ -63,7 +70,7 @@ class _TaskState extends State<Task> {
                                     fontSize: 24,
                                     overflow: TextOverflow.ellipsis))),
                         Difficult(
-                          difficultLevel: widget.difficult,
+                          difficultLevel: widget.difficulty,
                         ),
                       ],
                     ),
@@ -72,7 +79,7 @@ class _TaskState extends State<Task> {
                       child: ElevatedButton(
                         onPressed: () {
                           setState(() {
-                            level++;
+                            widget.level++;
                           });
                           // print(level);
                         },
@@ -97,13 +104,13 @@ class _TaskState extends State<Task> {
                       width: 200,
                       child: LinearProgressIndicator(
                         color: Colors.white,
-                        value: (widget.difficult != 0)
-                            ? (level / widget.difficult) / 10
+                        value: (widget.difficulty != 0)
+                            ? (widget.level / widget.difficulty) / 10
                             : 1,
                       ),
                     ),
                     Text(
-                      'Level: $level',
+                      'Level: ${widget.level}',
                       style: const TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ],

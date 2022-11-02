@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo/data/task_inherited.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({Key? key}) : super(key: key);
+  const FormScreen({Key? key, required this.taskContext}) : super(key: key);
+
+  final BuildContext taskContext;
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -13,6 +16,21 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController imageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  bool valueValidator(String? value){
+    if(value != null && value.isEmpty){
+      return true;
+    }
+    return false;
+  }
+  bool difficultyValidator(String? value){
+    if(value != null && value.isEmpty){
+      if (int.parse(value) > 5 || int.parse(value) < 1){
+        return true;
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +57,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (String? value) {
-                        if (value != null && value.isEmpty) {
+                        if (valueValidator(value)) {
                           return 'Insira o nome da Tarefa!';
                         }
                         return null;
@@ -58,9 +76,7 @@ class _FormScreenState extends State<FormScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       validator: (value) {
-                        if (value!.isEmpty ||
-                            int.parse(value) > 5 ||
-                            int.parse(value) < 1) {
+                        if (difficultyValidator(value)) {
                           return 'Insira uma dificuldade entre 1 e 5.';
                         }
                         return null;
@@ -83,7 +99,7 @@ class _FormScreenState extends State<FormScreen> {
                         setState(() {});
                       },
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (valueValidator(value)) {
                           return 'Insira um URL de Image!';
                         }
                         return null;
@@ -123,9 +139,13 @@ class _FormScreenState extends State<FormScreen> {
                           print(nameController.text);
                           print(difficultyController);
                           print(imageController.text);
+                          TaskInherited.of(widget.taskContext).newTask(nameController.text, imageController.text, int.parse(difficultyController.text));
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('Salvando nova Tarefa')));
+                                  content: Text('Criando uma nova Tarefa')
+                              )
+                          );
+                          Navigator.pop(context);
                         }
                       },
                       child: const Text('Adicionar!'))
